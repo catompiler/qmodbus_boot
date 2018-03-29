@@ -2,6 +2,9 @@
 #include <algorithm>
 
 
+#define MODBUS_ERR_DEFAULT_EXCEPTION_CODE 0xff
+
+
 
 ModbusErr::ModbusErr()
 {
@@ -104,7 +107,7 @@ ModbusErr::ModbusErrData::ModbusErrData()
     err_type = None;
     sander_name = QString();
     err_str = QString();
-    modbus_exc = static_cast<QModbusPdu::ExceptionCode>(0);
+    modbus_exc = static_cast<QModbusPdu::ExceptionCode>(MODBUS_ERR_DEFAULT_EXCEPTION_CODE);
     modbus_err = QModbusDevice::NoError;
     modbus_err_str = QString();
 }
@@ -116,7 +119,7 @@ ModbusErr::ModbusErrData::ModbusErrData(ModbusErr::Type t, const QString& sndr, 
     err_type = t;
     sander_name = sndr;
     err_str = estr;
-    modbus_exc = static_cast<QModbusPdu::ExceptionCode>(0);
+    modbus_exc = static_cast<QModbusPdu::ExceptionCode>(MODBUS_ERR_DEFAULT_EXCEPTION_CODE);
     modbus_err = QModbusDevice::NoError;
     modbus_err_str = QString();
 }

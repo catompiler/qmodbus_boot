@@ -34,6 +34,7 @@ private slots:
     void on_pbRead_clicked();
     void on_pbWrite_clicked();
     void on_pbCancel_clicked();
+    void on_pbRun_clicked();
 
     void confReaded();
     void confReadError(ModbusErr error);

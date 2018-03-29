@@ -42,6 +42,8 @@ public:
 
     bool cancel();
 
+    bool runApp();
+
     static constexpr quint32 flashBase()
         { return 0x08000000; }
 
@@ -82,10 +84,14 @@ private:
     ModbusReg* reg_flash_size;
     ModbusReg* reg_page_size;
 
+    ModbusReg* reg_run_app;
+
     ModbusReg* reg_page_num;
     ModbusReg* reg_page_erase;
     ModbusFile* file_page;
     ModbusFileRegion* file_rgn_page;
+
+
 
     ModbusChain* conf_chain;
     ModbusChain* iter_chain;

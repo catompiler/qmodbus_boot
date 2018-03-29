@@ -39,6 +39,8 @@ public:
 signals:
     void stateChanged(QModbusDevice::State state);
     void errorOccured(ModbusErr error);
+
+    // Вызываются после сигнала stateChanged.
     void connectedToNet();
     void disconnectedFromNet();
 

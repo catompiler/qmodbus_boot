@@ -132,6 +132,12 @@ bool ModbusMsg::send(QModbusClient *modbus, int slaveAddr)
     return true;
 }
 
+int ModbusMsg::dataSize() const
+{
+    if(!msg_sender) return 0;
+    return msg_sender->dataSize();
+}
+
 bool ModbusMsg::cancel()
 {
     if(isSending()){
@@ -245,6 +251,11 @@ QModbusReply *ModbusMsg::MsgRawRequest::send(QModbusClient *modbus, int modbus_s
     return modbus->sendRawRequest(modbus_req, modbus_slave);
 }
 
+int ModbusMsg::MsgRawRequest::dataSize() const
+{
+    return modbus_req.size();
+}
+
 ModbusMsg::MsgDataUnit::MsgDataUnit(const QModbusDataUnit &du, ModbusMsg::DataUnitDirection d) : MsgSender()
 {
     modbus_du = du;
@@ -266,4 +277,26 @@ QModbusReply *ModbusMsg::MsgDataUnit::send(QModbusClient *modbus, int modbus_sla
         return modbus->sendWriteRequest(modbus_du, modbus_slave);
     }
     return nullptr;
+}
+
+int ModbusMsg::MsgDataUnit::dataSize() const
+{
+    const int read_header_size = 5; /* func(1) + addr(2) + size(2) */
+    const int write_header_size = 6; /* func(1) + addr(2) + size(2) + bytes(1) */
+
+    if(dir == ModbusMsg::Read){
+        return read_header_size;
+    }else{ // ModbusMsg::Write
+        switch(modbus_du.registerType()){
+        default:
+            break;
+        case QModbusDataUnit::Coils:
+        case QModbusDataUnit::DiscreteInputs:
+            return write_header_size + (modbus_du.values().size() + 7) / 8;
+        case QModbusDataUnit::HoldingRegisters:
+        case QModbusDataUnit::InputRegisters:
+            return write_header_size + modbus_du.values().size() * sizeof(uint16_t);
+        }
+    }
+    return 0;
 }

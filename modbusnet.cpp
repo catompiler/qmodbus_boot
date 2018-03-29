@@ -3,7 +3,7 @@
 #include "settings.h"
 #include "modbusmsg.h"
 #include <QVariant>
-#include <QDebug>
+#include <math.h>
 #include <QDebug>
 
 
@@ -98,6 +98,8 @@ bool ModbusNet::sendMsg(ModbusMsg *msg, int slaveAddr)
 
 void ModbusNet::on_modbus_state_changed(QModbusDevice::State state)
 {
+    emit stateChanged(state);
+
     switch(state){
     default:
         break;
@@ -108,8 +110,6 @@ void ModbusNet::on_modbus_state_changed(QModbusDevice::State state)
         emit disconnectedFromNet();
         break;
     }
-
-    emit stateChanged(state);
 }
 
 void ModbusNet::on_modbus_error_occured(QModbusDevice::Error error)
@@ -154,6 +154,18 @@ bool ModbusNet::sendNextMsg()
         int slaveAddr = msg_pair.second;
 
         connect(msg, &ModbusMsg::finished, this, &ModbusNet::on_queue_msg_finished);
+
+        int frame_delay = ceil(static_cast<float>(msg->dataSize()) * 11 /
+                               Settings::get().serailPortBaud() * 1000) * 1000;
+
+        //qDebug() << "msg size" << data_size << "frame delay" << frame_delay;
+
+        int used_frame_delay = qMax<int>(frame_delay, Settings::get().modbusFrameDelay());
+
+        // Долбаный Qt SerialBus ограничивает
+        // время отправки данных до
+        // interFrameDelay мкс.
+        static_cast<QModbusRtuSerialMaster*>(modbus)->setInterFrameDelay(used_frame_delay);
 
         if(msg->send(modbus, slaveAddr)) break;
 

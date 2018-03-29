@@ -20,6 +20,8 @@
 #define BOOT_MODBUS_COIL_BASE 0x1
 //! Флаг стирания страницы по адресу в регистре BOOT_MODBUS_HOLD_REG_PAGE_ADDRESS.
 #define BOOT_MODBUS_COIL_PAGE_ERASE (BOOT_MODBUS_COIL_BASE + 0)
+//! Флаг запуска приложения.
+#define BOOT_MODBUS_COIL_RUN_APP (BOOT_MODBUS_COIL_BASE + 1)
 // Файлы.
 //! Базовый адрес файлов.
 #define BOOT_MODBUS_FILE_BASE 0x1
@@ -32,6 +34,7 @@ ModbusFirmware::ModbusFirmware(QObject *parent) : ModbusObj(parent)
     conf_chain = nullptr;
     reg_flash_size = nullptr;
     reg_page_size = nullptr;
+    reg_run_app = nullptr;
     reg_page_num = nullptr;
     reg_page_erase = nullptr;
     file_page = nullptr;
@@ -46,6 +49,7 @@ ModbusFirmware::ModbusFirmware(ModbusDev* dev, QObject* parent) : ModbusObj(dev,
     conf_chain = nullptr;
     reg_flash_size = nullptr;
     reg_page_size = nullptr;
+    reg_run_app = nullptr;
     reg_page_num = nullptr;
     reg_page_erase = nullptr;
     file_page = nullptr;
@@ -60,6 +64,7 @@ ModbusFirmware::~ModbusFirmware()
     if(conf_chain) delete conf_chain;
     if(reg_flash_size) delete reg_flash_size;
     if(reg_page_size) delete reg_page_size;
+    if(reg_run_app) delete reg_run_app;
     if(reg_page_num) delete reg_page_num;
     if(reg_page_erase) delete reg_page_erase;
     if(file_page) delete file_page;
@@ -224,6 +229,18 @@ bool ModbusFirmware::cancel()
     return iter_chain->cancel();
 }
 
+bool ModbusFirmware::runApp()
+{
+    if(!modbusDev() || !modbusDev()->isValid()) return false;
+
+    if(!reg_run_app){
+        reg_run_app = new ModbusReg(modbusDev(), QModbusDataUnit::Coils, BOOT_MODBUS_COIL_RUN_APP);
+        reg_run_app->setValue(1);
+    }
+
+    return reg_run_app->write();
+}
+
 void ModbusFirmware::confRead()
 {
     if(!modbusDev() || !modbusDev()->isValid()) return;
@@ -268,7 +285,7 @@ void ModbusFirmware::confChainSuccess()
 void ModbusFirmware::confChainFail(ModbusErr error)
 {
     if(conf_chain == nullptr){
-        qDebug() << "ModbusFirmware: updateChainFail update_chain == nullptr!";
+        qDebug() << "ModbusFirmware: confChainFail update_chain == nullptr!";
         return;
     }
 
@@ -311,7 +328,7 @@ void ModbusFirmware::iterChainFail(ModbusErr error)
         return;
     }
 
-    qDebug() << "ModbusFirmware: updateChainFail chain index:" << iter_chain->currentIndex();
+    qDebug() << "ModbusFirmware: iterChainFail chain index:" << iter_chain->currentIndex();
 
     op_iter.end();
 

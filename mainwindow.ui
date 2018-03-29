@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>228</height>
+    <width>312</width>
+    <height>204</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,28 +24,28 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="2">
+      <item row="0" column="1">
        <widget class="QLineEdit" name="leAddress">
-        <property name="text">
-         <string>0x8005000</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblSize">
-        <property name="text">
-         <string>Размер</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QSpinBox" name="sbSize">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="text">
+         <string>0x8004000</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="lblSize">
+        <property name="text">
+         <string>Размер</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QSpinBox" name="sbSize">
         <property name="maximum">
          <number>1048576</number>
         </property>
@@ -57,22 +57,28 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="lblFile">
         <property name="text">
          <string>Файл</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1" colspan="2">
        <widget class="QLineEdit" name="leFileName">
         <property name="text">
-         <string>D:/home/tmp/firmware.bin</string>
+         <string>D:/home/devel/ppt/build/main.bin</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="1" column="3">
        <widget class="QPushButton" name="pbSelectFile">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Обзор</string>
         </property>
@@ -81,49 +87,56 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
        <widget class="QPushButton" name="pbWrite">
         <property name="text">
          <string>Записать</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QPushButton" name="pbRead">
         <property name="text">
          <string>Прочитать</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="pbCancel">
-        <property name="text">
-         <string>Отмена</string>
-        </property>
-       </widget>
-      </item>
-      <item>
+      <item row="0" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>13</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="pbCancel">
+        <property name="text">
+         <string>Отмена</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QProgressBar" name="prbProgress">
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="pbRun">
+        <property name="text">
+         <string>Запуск</string>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QProgressBar" name="prbProgress">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
@@ -132,7 +145,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>275</width>
+     <width>312</width>
      <height>21</height>
     </rect>
    </property>

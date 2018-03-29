@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFile>
+#include <QFileInfo>
 #include <QDataStream>
 #include <QByteArray>
 #include <QDebug>
@@ -112,14 +113,16 @@ void MainWindow::refreshUi()
     ui->actConnect->setEnabled(!connected);
     ui->actDisconnect->setEnabled(connected);
 
-    ui->leAddress->setEnabled(fw_ready && !fw_exec);
+    /*ui->leAddress->setEnabled(fw_ready && !fw_exec);
     ui->sbSize->setEnabled(fw_ready && !fw_exec);
     ui->pbSelectFile->setEnabled(fw_ready && !fw_exec);
-    ui->leFileName->setEnabled(fw_ready && !fw_exec);
+    ui->leFileName->setEnabled(fw_ready && !fw_exec);*/
 
     ui->pbRead->setEnabled(fw_ready && !fw_exec);
     ui->pbWrite->setEnabled(fw_ready && !fw_exec);
     ui->pbCancel->setEnabled(fw_ready && fw_exec);
+
+    ui->pbRun->setEnabled(fw_ready && !fw_exec);
 }
 
 QString MainWindow::modbusErrorToString(QModbusDevice::Error err) const
@@ -253,7 +256,8 @@ void MainWindow::on_actDisconnect_triggered()
 void MainWindow::on_pbSelectFile_clicked()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Файл прошивки"),
-                                                    QString(), tr("Двоичный (*.bin);;Все файлы (*)"),
+                                                    QFileInfo(ui->leFileName->text()).absoluteFilePath(),
+                                                    tr("Двоичный (*.bin);;Все файлы (*)"),
                                                     nullptr, QFileDialog::DontConfirmOverwrite);
     if(filename.isEmpty()) return;
 
@@ -326,8 +330,14 @@ void MainWindow::on_pbCancel_clicked()
     modbus_fw->cancel();
 }
 
+void MainWindow::on_pbRun_clicked()
+{
+    modbus_fw->runApp();
+}
+
 void MainWindow::confReaded()
 {
+    statusBar()->showMessage(tr("Объём памяти: %1 кбайт").arg(modbus_fw->flashSize()), STATUSBAR_TIME);
     refreshUi();
 }
 
@@ -394,6 +404,8 @@ void MainWindow::writeFlashCanceled()
 
 void MainWindow::connectedToNet()
 {
+    statusBar()->showMessage(tr("Чтение конфигурации памяти..."), STATUSBAR_TIME);
+
     modbus_fw->confRead();
 
     refreshUi();

@@ -52,6 +52,8 @@ public:
 
     bool send(QModbusClient* modbus, int slaveAddr);
 
+    int dataSize() const;
+
     bool cancel();
 
 signals:
@@ -72,6 +74,7 @@ private:
         virtual ~MsgSender(){}
 
         virtual QModbusReply* send(QModbusClient *modbus, int modbus_slave) = 0;
+        virtual int dataSize() const = 0;
     };
 
     class MsgRawRequest : public MsgSender {
@@ -80,6 +83,7 @@ private:
         ~MsgRawRequest();
 
         QModbusReply* send(QModbusClient *modbus, int modbus_slave);
+        virtual int dataSize() const;
 
     private:
         QModbusRequest modbus_req;
@@ -92,6 +96,7 @@ private:
         ~MsgDataUnit();
 
         QModbusReply* send(QModbusClient *modbus, int modbus_slave);
+        virtual int dataSize() const;
 
     private:
         QModbusDataUnit modbus_du;
