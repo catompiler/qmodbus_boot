@@ -32,8 +32,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Адрес в памяти</string>
+        </property>
         <property name="text">
-         <string>0x8004000</string>
+         <string>0x8000000</string>
         </property>
        </widget>
       </item>
@@ -46,6 +49,9 @@
       </item>
       <item row="0" column="3">
        <widget class="QSpinBox" name="sbSize">
+        <property name="toolTip">
+         <string>Размер данных для чтения</string>
+        </property>
         <property name="maximum">
          <number>1048576</number>
         </property>
@@ -66,8 +72,11 @@
       </item>
       <item row="1" column="1" colspan="2">
        <widget class="QLineEdit" name="leFileName">
+        <property name="toolTip">
+         <string>Файл для чтения/записи</string>
+        </property>
         <property name="text">
-         <string>D:/home/devel/ppt/build/main.bin</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -78,6 +87,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Выбрать файл</string>
         </property>
         <property name="text">
          <string>Обзор</string>
@@ -90,6 +102,9 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QPushButton" name="pbWrite">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Записать файл целиком&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Записать</string>
         </property>
@@ -97,6 +112,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="pbRead">
+        <property name="toolTip">
+         <string>Прочитать данные заданного размера</string>
+        </property>
         <property name="text">
          <string>Прочитать</string>
         </property>
@@ -117,6 +135,9 @@
       </item>
       <item row="0" column="3">
        <widget class="QPushButton" name="pbCancel">
+        <property name="toolTip">
+         <string>Прервать операцию</string>
+        </property>
         <property name="text">
          <string>Отмена</string>
         </property>
@@ -131,6 +152,9 @@
       </item>
       <item row="1" column="3">
        <widget class="QPushButton" name="pbRun">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Запустить основную прошивку&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Запуск</string>
         </property>
